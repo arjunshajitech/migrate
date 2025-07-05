@@ -446,6 +446,10 @@ func runesLastIndex(input []rune, target rune) int {
 	return -1
 }
 
+func (p *Postgres) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (p *Postgres) SetVersion(version int, dirty bool) error {
 	tx, err := p.conn.BeginTx(context.Background(), &sql.TxOptions{})
 	if err != nil {

@@ -243,6 +243,10 @@ func (c *Cassandra) Run(migration io.Reader) error {
 	return nil
 }
 
+func (c *Cassandra) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (c *Cassandra) SetVersion(version int, dirty bool) error {
 	// DELETE instead of TRUNCATE because AWS Keyspaces does not support it
 	// see: https://docs.aws.amazon.com/keyspaces/latest/devguide/cassandra-apis.html

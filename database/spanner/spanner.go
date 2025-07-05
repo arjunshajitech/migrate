@@ -199,6 +199,10 @@ func (s *Spanner) Run(migration io.Reader) error {
 	return nil
 }
 
+func (s *Spanner) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 // SetVersion implements database.Driver
 func (s *Spanner) SetVersion(version int, dirty bool) error {
 	ctx := context.Background()

@@ -73,6 +73,10 @@ func (s *Stub) Run(migration io.Reader) error {
 	return nil
 }
 
+func (s *Stub) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (s *Stub) SetVersion(version int, state bool) error {
 	s.CurrentVersion = version
 	s.IsDirty = state

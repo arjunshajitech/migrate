@@ -270,6 +270,10 @@ func (c *YugabyteDB) Run(migration io.Reader) error {
 	return nil
 }
 
+func (c *YugabyteDB) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (c *YugabyteDB) SetVersion(version int, dirty bool) error {
 	return c.doTxWithRetry(context.Background(), &sql.TxOptions{Isolation: sql.LevelSerializable}, func(tx *sql.Tx) error {
 		if _, err := tx.Exec(`DELETE FROM "` + c.config.MigrationsTable + `"`); err != nil {

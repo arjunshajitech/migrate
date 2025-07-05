@@ -261,6 +261,10 @@ func (ss *SQLServer) Run(migration io.Reader) error {
 	return nil
 }
 
+func (ss *SQLServer) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 // SetVersion for the current database
 func (ss *SQLServer) SetVersion(version int, dirty bool) error {
 

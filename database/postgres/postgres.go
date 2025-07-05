@@ -353,6 +353,40 @@ func runesLastIndex(input []rune, target rune) int {
 	return -1
 }
 
+func (p *Postgres) SetVersionV2(script string, version int, dirty bool) error {
+	tx, err := p.conn.BeginTx(context.Background(), &sql.TxOptions{})
+	if err != nil {
+		return &database.Error{OrigErr: err, Err: "transaction start failed"}
+	}
+
+	query := `DELETE FROM ` + pq.QuoteIdentifier(p.config.migrationsSchemaName) + `.` + pq.QuoteIdentifier(p.config.migrationsTableName) + ` WHERE version = $1`
+	if _, err := tx.Exec(query, version); err != nil {
+		if errRollback := tx.Rollback(); errRollback != nil {
+			err = multierror.Append(err, errRollback)
+		}
+		return &database.Error{OrigErr: err, Query: []byte(query)}
+	}
+
+	// Also re-write the schema version for nil dirty versions to prevent
+	// empty schema version for failed down migration on the first migration
+	// See: https://github.com/golang-migrate/migrate/issues/330
+	if version >= 0 || (version == database.NilVersion && dirty) {
+		query = `INSERT INTO ` + pq.QuoteIdentifier(p.config.migrationsSchemaName) + `.` + pq.QuoteIdentifier(p.config.migrationsTableName) + ` (version, dirty, script) VALUES ($1, $2, $3)`
+		if _, err := tx.Exec(query, version, dirty, script); err != nil {
+			if errRollback := tx.Rollback(); errRollback != nil {
+				err = multierror.Append(err, errRollback)
+			}
+			return &database.Error{OrigErr: err, Query: []byte(query)}
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return &database.Error{OrigErr: err, Err: "transaction commit failed"}
+	}
+
+	return nil
+}
+
 func (p *Postgres) SetVersion(version int, dirty bool) error {
 	tx, err := p.conn.BeginTx(context.Background(), &sql.TxOptions{})
 	if err != nil {
@@ -483,7 +517,11 @@ func (p *Postgres) ensureVersionTable() (err error) {
 		return nil
 	}
 
-	query = `CREATE TABLE IF NOT EXISTS ` + pq.QuoteIdentifier(p.config.migrationsSchemaName) + `.` + pq.QuoteIdentifier(p.config.migrationsTableName) + ` (version bigint not null primary key, dirty boolean not null)`
+	query = `CREATE TABLE IF NOT EXISTS ` + pq.QuoteIdentifier(p.config.migrationsSchemaName) + `.` + pq.QuoteIdentifier(p.config.migrationsTableName) + ` (
+	version BIGINT NOT NULL PRIMARY KEY,
+	dirty BOOLEAN NOT NULL,
+	script VARCHAR(255) NOT NULL,
+	executed_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)`
 	if _, err = p.conn.ExecContext(context.Background(), query); err != nil {
 		return &database.Error{OrigErr: err, Query: []byte(query)}
 	}

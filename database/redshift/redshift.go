@@ -208,6 +208,10 @@ func runesLastIndex(input []rune, target rune) int {
 	return -1
 }
 
+func (p *Redshift) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (p *Redshift) SetVersion(version int, dirty bool) error {
 	tx, err := p.conn.BeginTx(context.Background(), &sql.TxOptions{})
 	if err != nil {

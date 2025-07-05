@@ -202,6 +202,11 @@ func (m *Ql) executeQuery(query string) error {
 	}
 	return nil
 }
+
+func (m *Ql) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (m *Ql) SetVersion(version int, dirty bool) error {
 	tx, err := m.db.Begin()
 	if err != nil {

@@ -354,6 +354,10 @@ func (m *Mysql) Run(migration io.Reader) error {
 	return nil
 }
 
+func (m *Mysql) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (m *Mysql) SetVersion(version int, dirty bool) error {
 	tx, err := m.conn.BeginTx(context.Background(), &sql.TxOptions{Isolation: sql.LevelSerializable})
 	if err != nil {

@@ -225,6 +225,10 @@ func (c *CockroachDb) Run(migration io.Reader) error {
 	return nil
 }
 
+func (c *CockroachDb) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (c *CockroachDb) SetVersion(version int, dirty bool) error {
 	return crdb.ExecuteTx(context.Background(), c.db, nil, func(tx *sql.Tx) error {
 		if _, err := tx.Exec(`DELETE FROM "` + c.config.MigrationsTable + `"`); err != nil {

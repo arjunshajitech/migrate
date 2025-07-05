@@ -44,6 +44,10 @@ func (m *mockDriver) SetVersion(version int, dirty bool) error {
 	return nil
 }
 
+func (c *mockDriver) SetVersionV2(script string, version int, dirty bool) error {
+	return nil
+}
+
 func (m *mockDriver) Version() (version int, dirty bool, err error) {
 	return 0, false, nil
 }

@@ -181,6 +181,10 @@ func (n *Neo4j) Run(migration io.Reader) (err error) {
 	return err
 }
 
+func (n *Neo4j) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (n *Neo4j) SetVersion(version int, dirty bool) (err error) {
 	session, err := n.driver.Session(neo4j.AccessModeWrite)
 	if err != nil {

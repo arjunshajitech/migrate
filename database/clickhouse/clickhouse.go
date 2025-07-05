@@ -178,6 +178,10 @@ func (ch *ClickHouse) Version() (int, bool, error) {
 	return version, dirty == 1, nil
 }
 
+func (ch *ClickHouse) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (ch *ClickHouse) SetVersion(version int, dirty bool) error {
 	var (
 		bool = func(v bool) uint8 {

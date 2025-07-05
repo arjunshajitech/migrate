@@ -215,6 +215,11 @@ func parseInt(urlParam string, defaultValue int) (int, error) {
 	// if no url Param passed, return default value
 	return defaultValue, nil
 }
+
+func (m *Mongo) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (m *Mongo) SetVersion(version int, dirty bool) error {
 	migrationsCollection := m.db.Collection(m.config.MigrationsCollection)
 	if err := migrationsCollection.Drop(context.TODO()); err != nil {

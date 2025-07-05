@@ -228,6 +228,10 @@ func (m *Sqlite) executeQueryNoTx(query string) error {
 	return nil
 }
 
+func (m *Sqlite) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (m *Sqlite) SetVersion(version int, dirty bool) error {
 	tx, err := m.db.Begin()
 	if err != nil {

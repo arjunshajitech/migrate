@@ -65,10 +65,15 @@ type Driver interface {
 	// Run applies a migration to the database. migration is guaranteed to be not nil.
 	Run(migration io.Reader) error
 
-	// SetVersion saves version and dirty state.
+	// SetVersion CassandraSetVersion saves version and dirty state.
 	// Migrate will call this function before and after each call to Run.
 	// version must be >= -1. -1 means NilVersion.
 	SetVersion(version int, dirty bool) error
+
+	// SetVersionV2 CassandraSetVersion saves version and dirty state.
+	// Migrate will call this function before and after each call to Run.
+	// version must be >= -1. -1 means NilVersion.
+	SetVersionV2(script string, version int, dirty bool) error
 
 	// Version returns the currently active version and if the database is dirty.
 	// When no migration has been applied, it must return version -1.

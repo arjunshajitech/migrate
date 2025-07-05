@@ -135,6 +135,10 @@ func (f *Firebird) Run(migration io.Reader) error {
 	return nil
 }
 
+func (f *Firebird) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 func (f *Firebird) SetVersion(version int, dirty bool) error {
 	// Always re-write the schema version to prevent empty schema version
 	// for failed down migration on the first migration

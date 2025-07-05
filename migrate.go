@@ -737,7 +737,7 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 			migr := r
 
 			// set version with dirty state
-			if err := m.databaseDrv.SetVersion(migr.TargetVersion, true); err != nil {
+			if err := m.databaseDrv.SetVersionV2(migr.Identifier, migr.TargetVersion, true); err != nil {
 				return err
 			}
 
@@ -749,7 +749,7 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 			}
 
 			// set clean state
-			if err := m.databaseDrv.SetVersion(migr.TargetVersion, false); err != nil {
+			if err := m.databaseDrv.SetVersionV2(migr.Identifier, migr.TargetVersion, false); err != nil {
 				return err
 			}
 

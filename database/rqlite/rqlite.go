@@ -173,6 +173,10 @@ func (r *Rqlite) Run(migration io.Reader) error {
 	return nil
 }
 
+func (r *Rqlite) SetVersionV2(script string, version int, dirty bool) error {
+	panic("implement me")
+}
+
 // SetVersion saves version and dirty state.
 // Migrate will call this function before and after each call to Run.
 // version must be >= -1. -1 means NilVersion.
